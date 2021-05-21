@@ -17,5 +17,13 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "Uses Javascript to remotely change the color of a Hue smart light (requires home).",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dtocci1/hueController.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dtocci1/hueController/issues"
+  },
+  "homepage": "https://github.com/dtocci1/hueController#readme"
 }
