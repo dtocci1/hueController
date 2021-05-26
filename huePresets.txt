@@ -1,4 +1,10 @@
-red:
-    bri: 254,
-    hue: 64818,
-    sat: 254,
+red 64818 254
+blue 44507 254
+cyan 41524 220
+yellow 10474 175
+lime 16045 234
+green 24076 254
+orange 5868 207
+purple 47284 214
+pink 52060 227
+white 41442 75

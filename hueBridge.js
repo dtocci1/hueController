@@ -8,20 +8,18 @@
     * 
     * TO DO:
     *   - Allow for changing IP
-    *   - Add preset color options / presets in general
-    *   - Add fetch state
     *   - Add HTML frontend?
 */
 
-
-//import 'regenerator-runtime/runtime';
 import axios from 'axios'
+import fs from 'fs'
 
 // Light parameters
 var nhue = 1000;
 var state = false;
 var brightness = 0;
 var saturation = 0;
+var color = "white"; // default color
 
 // Debug parameters
 var date = new Date();
@@ -74,12 +72,45 @@ const setSaturation = async () => {
     }
 };
 
+function setColor() {
+    //var file = require('fs');
+    try {
+        var data = fs.readFileSync('huePresets.txt','utf8');
+        data = data.toString(); // convert to string
+
+        // parse string based on color
+        var dataArray = data.split('\n');
+
+        for(var i=0; i<dataArray.length; i++)
+        {
+            if (dataArray[i].includes(color.toLowerCase()))
+            {   
+                var parameters = dataArray[i].split(' ');
+                nhue = parseInt(parameters[1]);
+                saturation = parseInt(parameters[2]);
+                setSaturation();
+                setHue();
+            }
+        }
+
+        
+    } catch(err) {
+        console.error(err);
+    }
+};
+
+
+
 async function getState() {
     let res = await axios.get(url.replace("/state",""));
     let data = res.data;
     console.log(data);
   }
   
+
+// ************************************************************************
+// **************************** HANDLE INPUT ******************************
+// ************************************************************************
 
 switch(args[2]) 
 {
@@ -153,20 +184,17 @@ switch(args[2])
             brightness = parseInt(args[4]);
             saturation = parseInt(args[5]);
         } catch {
-            console.log("ERROR: Input was goofed. Too lazy to figure out what part.")
+            console.log("ERROR: Input was goofed. Too lazy to figure out what part.");
         }
-        
+
         setSaturation();
         setHue();
         setBrightness();
         break;
 
     case "setColor":
-
-        break;
-
-    case "setPreset":
-
+        color = args[3];
+        setColor();
         break;
 
     case "getState":
@@ -179,8 +207,8 @@ switch(args[2])
                     "\n\t setHue" +
                     "\n\t setBrightness" +
                     "\n\t setSaturation" +
-                    "\n\t getState" +
-                    "\n\t setPreset\n");
+                    "\n\t setHBS" +
+                    "\n\t getState");
         break;
 
     default:
